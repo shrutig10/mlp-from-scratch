@@ -70,3 +70,5 @@ for name, param, analytical_grad in checks:
     print(f"{name}:")
     print("  Analytical norm:", np.linalg.norm(analytical_grad))
     print("  Relative error: ", relative_error)
+
+print("Minimum |Z1|:", np.min(np.abs(Z1)))
