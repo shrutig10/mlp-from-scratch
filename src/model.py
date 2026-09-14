@@ -9,10 +9,18 @@ class MLP:
     def __init__(self, input_dim, hidden_dim, output_dim, seed=42):
         rng = np.random.default_rng(seed)
 
-        self.W1 = rng.normal(size=(hidden_dim, input_dim))
+        self.W1 = rng.normal(
+            loc=0.0,
+            scale=np.sqrt(2 / input_dim),
+            size=(hidden_dim, input_dim)
+        )
         self.b1 = np.zeros(hidden_dim)
 
-        self.W2 = rng.normal(size=(output_dim, hidden_dim))
+        self.W2 = rng.normal(
+            loc=0.0,
+            scale=np.sqrt(2 / hidden_dim),
+            size=(output_dim, hidden_dim)
+        )
         self.b2 = np.zeros(output_dim)
 
 
@@ -76,62 +84,12 @@ class MLP:
 
         return grad_W1, grad_b1, grad_W2, grad_b2
 
-"""
-# Implement the backward pass of the neural network
+    def update(self, grad_W1, grad_b1, grad_W2, grad_b2, learning_rate):
+        self.W1 -= learning_rate * grad_W1
+        self.b1 -= learning_rate * grad_b1
 
-T = np.zeros_like(P)
-T[np.arange(B), y] = 1
-
-delta2 = (P - T) / B
-
-print("T:")
-print(T)
-
-print("delta2:")
-print(delta2)
-print("delta2 shape:", delta2.shape)
-
-grad_W2 = delta2.T @ H1
-
-print("grad_W2:")
-print(grad_W2)
-print("grad_W2 shape:", grad_W2.shape)
-
-grad_b2 = np.sum(delta2, axis=0)
-
-print("grad_b2:")
-print(grad_b2)
-print("grad_b2 shape:", grad_b2.shape)
-
-grad_H1 = delta2 @ W2
-
-print("grad_H1:")
-print(grad_H1)
-print("grad_H1 shape:", grad_H1.shape)
-
-relu_grad = (Z1 > 0).astype(float)
-
-delta1 = grad_H1 * relu_grad
-
-print("relu_grad:")
-print(relu_grad)
-
-print("delta1:")
-print(delta1)
-print("delta1 shape:", delta1.shape)
-
-grad_W1 = delta1.T @ X
-
-print("grad_W1:")
-print(grad_W1)
-print("grad_W1 shape:", grad_W1.shape)
-
-grad_b1 = np.sum(delta1, axis=0)
-
-print("grad_b1:")
-print(grad_b1)
-print("grad_b1 shape:", grad_b1.shape)
-"""
+        self.W2 -= learning_rate * grad_W2
+        self.b2 -= learning_rate * grad_b2
 
 if __name__ == "__main__":
     B = 4
@@ -149,12 +107,15 @@ if __name__ == "__main__":
     Z1, H1, A = model.forward(X)
 
     loss = model.loss(A, y)
-
+    print(loss)
+ 
     grad_W1, grad_b1, grad_W2, grad_b2 = model.backward(
         X, y, Z1, H1, A
     )
 
-    print("grad_W1 shape:", grad_W1.shape)
-    print("grad_b1 shape:", grad_b1.shape)
-    print("grad_W2 shape:", grad_W2.shape)
-    print("grad_b2 shape:", grad_b2.shape)
+    model.update(grad_W1, grad_b1, grad_W2, grad_b2, learning_rate=0.01)
+
+    Z1, H1, A = model.forward(X)
+
+    loss = model.loss(A, y)
+    print(loss)
