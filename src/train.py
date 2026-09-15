@@ -111,7 +111,8 @@ def plot_metrics(
     train_losses,
     val_losses,
     train_accuracies,
-    val_accuracies
+    val_accuracies,
+    prefix="",
 ):
     epochs = range(1, len(train_losses) + 1)
 
@@ -128,7 +129,7 @@ def plot_metrics(
     plt.legend()
     plt.grid(True)
 
-    plt.savefig("plots/loss_curve.png")
+    plt.savefig(f"plots/{prefix}loss_curve.png")
     plt.show()
 
     # Accuracy Curve
@@ -144,7 +145,7 @@ def plot_metrics(
     plt.legend()
     plt.grid(True)
 
-    plt.savefig("plots/accuracy_curve.png")
+    plt.savefig(f"plots/{prefix}accuracy_curve.png")
     plt.show()
 
 
