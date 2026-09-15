@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 from data import load_mnist, train_val_split, get_minibatches
 from model import MLP
@@ -88,23 +89,42 @@ for epoch in range(NUM_EPOCHS):
         y_val 
     ) 
 
-    print( 
-        f"Epoch {epoch + 1}/{NUM_EPOCHS} | " 
-        f"Train Loss: {train_loss:.4f} | " 
-        f"Train Acc: {train_accuracy:.4f} | " 
-        f"Val Loss: {val_loss:.4f} | " 
-        f"Val Acc: {val_accuracy:.4f}" 
-    )
-
     train_losses.append(train_loss)
     val_losses.append(val_loss)
     train_accuracies.append(train_accuracy)
     val_accuracies.append(val_accuracy)
 
-    print("Train losses:", train_losses)
-    print("Validation losses:", val_losses)
+epochs = range(1, NUM_EPOCHS + 1)
 
-    print("Train accuracies:", train_accuracies)
-    print("Validation accuracies:", val_accuracies)
+# Loss Curve
+plt.figure()
 
+plt.plot(epochs, train_losses, label="Train Loss")
+plt.plot(epochs, val_losses, label="Validation Loss")
+
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.title("Training and Validation Loss")
+
+plt.legend()
+plt.grid(True)
+
+plt.savefig("plots/loss_curve.png")
+plt.show()
+
+# Accuracy Curve
+plt.figure()
+
+plt.plot(epochs, train_accuracies, label="Train Accuracy")
+plt.plot(epochs, val_accuracies, label="Validation Accuracy")
+
+plt.xlabel("Epoch")
+plt.ylabel("Accuracy")
+plt.title("Training and Validation Accuracy")
+
+plt.legend()
+plt.grid(True)
+
+plt.savefig("plots/accuracy_curve.png")
+plt.show()
 
