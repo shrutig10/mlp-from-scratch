@@ -55,24 +55,10 @@ def train_val_split(X, y, val_size=10000, seed=42):
 
     return X_train, y_train, X_val, y_val
 
-if __name__ == "__main__":
-    X_train, y_train, X_test, y_test = load_mnist("data")
+def get_minibatches(X, y, batch_size, rng):
+    indices = rng.permutation(len(X))
 
-    X_train_1, y_train_1, X_val_1, y_val_1 = train_val_split(
-        X_train,
-        y_train,
-        val_size=10000,
-        seed=42
-    )
+    for start in range(0, len(X), batch_size):
+        batch_indices = indices[start:start + batch_size]
 
-    X_train_2, y_train_2, X_val_2, y_val_2 = train_val_split(
-        X_train,
-        y_train,
-        val_size=10000,
-        seed=42
-    )
-
-    print("Same training split:", np.array_equal(X_train_1, X_train_2))
-    print("Same training labels:", np.array_equal(y_train_1, y_train_2))
-    print("Same validation split:", np.array_equal(X_val_1, X_val_2))
-    print("Same validation labels:", np.array_equal(y_val_1, y_val_2))
+        yield X[batch_indices], y[batch_indices]
