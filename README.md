@@ -76,3 +76,18 @@ python src/overfit_test.py
 Experiments use fixed random seeds for parameter initialization, data splitting, and minibatch shuffling.
 
 The default seed is `42`.
+
+
+## Final Model
+
+The final model uses:
+- Hidden layer: 256 neurons
+- Activation: ReLU
+- Initialization: He initialization
+- Batch size: 16
+- Learning rate: 0.1
+- Epochs: 5
+- Random seed: 42
+
+Final validation accuracy: 97.76%
+Final test accuracy: 97.86%
